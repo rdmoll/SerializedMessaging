@@ -1,13 +1,17 @@
-CPP = g++-10
-#FLAGS = -std=c++11
-LIB = -L/usr/local/Cellar/zeromq/4.3.3_1/lib
-INC = -I/usr/local/Cellar/zeromq/4.3.3_1/include
+CPP = g++
+FLAGS = -std=c++11
+LIB = -L/usr/local/lib
+INC = -I/usr/local/include
 ADDLIB = -lzmq
-EXE = test
-SRC = main.cpp
+EXEPUB = test_pub
+EXESUB = test_sub
+SRCPUB = main_pub.cpp
+SRCSUB = main_sub.cpp
 
 all:
-	$(CPP) $(FLAGS) $(LIB) $(INC) $(SRC) $(ADDLIB) -o $(EXE)
+	$(CPP) $(FLAGS) $(LIB) $(INC) $(SRCPUB) $(ADDLIB) -o $(EXEPUB)
+	$(CPP) $(FLAGS) $(LIB) $(INC) $(SRCSUB) $(ADDLIB) -o $(EXESUB)
 
 clean:
-	rm -f $(EXE)
+	rm -f $(EXEPUB)
+	rm -f $(EXESUB)
