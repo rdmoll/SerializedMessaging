@@ -1,5 +1,7 @@
 test_pub
 test_sub
+*.pb.cc
+*.pb.h
 .DS_Store
 
 # Prerequisites

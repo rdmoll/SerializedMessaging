@@ -2,6 +2,8 @@
 #include <zmq.h>
 #include "zmq.hpp"
 
+#include "TableDefs.pb.h"
+
 int main()
 {
   zmq::context_t context( 1 );

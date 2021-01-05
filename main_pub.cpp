@@ -3,12 +3,17 @@
 #include <zmq.h>
 #include "zmq.hpp"
 
+#include "TableDefs.pb.h"
+
 int main()
 {
   std::cout << "Establishing publisher..." << std::endl;
   zmq::context_t context( 1 );
   zmq::socket_t publisher( context, ZMQ_PUB );
   publisher.bind( "tcp://*:5555" );
+
+  TestPackage::messageTable1 testTable;
+  testTable.set_var1( 9 );
 
   sleep( 2 );
 
