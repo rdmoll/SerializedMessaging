@@ -14,6 +14,7 @@ int main()
 
   TestPackage::messageTable1 testTable;
   testTable.set_var1( 9 );
+  testTable.set_testitems( TestPackage::messageTable1::FIRST_ITEM );
 
   sleep( 2 );
 
