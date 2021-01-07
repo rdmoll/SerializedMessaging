@@ -2,12 +2,13 @@ syntax = "proto2";
 package TestPackage;
 
 message messageTable1 {
-  optional int32 var1 = 1;
-  optional double var2 = 2;
+  optional int32 index = 1;
+  optional double var1 = 2;
   enum TestItemsEnum {
     FIRST_ITEM = 0;
     SECOND_ITEM = 1;
   }
   optional TestItemsEnum testItems = 3;
   repeated double array1 = 4;
+  optional string note = 5;
 }
