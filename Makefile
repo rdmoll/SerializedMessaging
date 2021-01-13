@@ -3,15 +3,15 @@ FLAGS = -std=c++11
 LIB = -L/usr/local/lib
 INC = -I/usr/local/include
 ADDLIB = -lzmq -lprotoc -lprotobuf
-EXEPUB = test_pub
-EXESUB = test_sub
-SRCPUB = main_pub.cpp TableDefs.pb.cc
-SRCSUB = main_sub.cpp TableDefs.pb.cc
+EXE1 = test_1
+EXE2 = test_2
+SRC1 = main_1.cpp TableDefs.pb.cc
+SRC2 = main_2.cpp TableDefs.pb.cc
 PROTOFILE = TableDefs.proto
 
 all:
-	$(CPP) $(FLAGS) $(LIB) $(INC) $(SRCPUB) $(ADDLIB) -o $(EXEPUB)
-	$(CPP) $(FLAGS) $(LIB) $(INC) $(SRCSUB) $(ADDLIB) -o $(EXESUB)
+	$(CPP) $(FLAGS) $(LIB) $(INC) $(SRC1) $(ADDLIB) -o $(EXE1)
+	$(CPP) $(FLAGS) $(LIB) $(INC) $(SRC2) $(ADDLIB) -o $(EXE2)
 
 protobuf:
 	protoc -I=. --cpp_out=. $(PROTOFILE)

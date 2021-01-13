@@ -16,11 +16,11 @@ int main()
   zmq::socket_t request( context, ZMQ_REQ );
   zmq::socket_t reply( context, ZMQ_REP );
 
-  publisher.bind( "tcp://*:5555" );
-  subscriber.connect( "tcp://localhost:5556" );
+  publisher.bind( "tcp://*:5556" );
+  subscriber.connect( "tcp://localhost:5555" );
   subscriber.setsockopt( ZMQ_SUBSCRIBE, "", 0 );
-  request.connect( "tcp://localhost:5557" );
-  reply.bind( "tcp://*:5558" );
+  request.connect( "tcp://localhost:5558" );
+  reply.bind( "tcp://*:5557" );
 
   TestPackage::messageTable1 testTable;
   testTable.set_var1( 3.14159 );
@@ -53,9 +53,11 @@ int main()
 
     // SUB
     zmq::message_t recvMsg;
-    subscriber.recv( &recvMsg, ZMQ_NOBLOCK );
+    subscriber.recv( &recvMsg, ZMQ_NOBLOCK );   // receive first frame
     if( recvMsg.size() > 0 )
     {
+      subscriber.recv( &recvMsg );  // receive second frame
+
       TestPackage::messageTable1 testTableRecv;
       bool parseSuccessful = testTableRecv.ParseFromArray( recvMsg.data(), recvMsg.size() );
       std::cout << "Sub message received : " << testTableRecv.index() << std::endl;
@@ -64,7 +66,7 @@ int main()
     sleep( 2 );
   }
 
-  publisher.close();
+  subscriber.close();
 
   return 0;
 }
