@@ -63,6 +63,30 @@ int main()
       std::cout << "Sub message received : " << testTableRecv.index() << std::endl;
     }
 
+    // REP
+    // Receive request
+    zmq::message_t reqMsg1;
+    reply.recv( &reqMsg1, ZMQ_NOBLOCK );
+    if( reqMsg1.size() > 0 )
+    {
+      zmq::message_t reqMsg2;
+      reply.recv( &reqMsg2 );
+    }
+
+    // Message frame 1
+    zmq::message_t repMsg1( msgString.size() + 1 );
+    memcpy( repMsg1.data(), msgString.c_str(), msgString.size() + 1 );
+
+    // Message frame 2
+    testTable.set_index( i );
+    zmq::message_t repMsg2( tableSize );
+    success = testTable.SerializeToArray( repMsg2.data(), tableSize );
+
+    // Send messages
+    std::cout << "Request data : " << i << std::endl;
+    reply.send( repMsg1, ZMQ_SNDMORE );
+    reply.send( repMsg2 );
+
     sleep( 2 );
   }
 

@@ -47,6 +47,7 @@ int main()
     zmq::message_t pubMsg2( tableSize );
     bool success = testTable.SerializeToArray( pubMsg2.data(), tableSize );
 
+    // Send messages
     std::cout << "Publishing data : " << i << std::endl;
     publisher.send( pubMsg1, ZMQ_SNDMORE );
     publisher.send( pubMsg2 );
@@ -62,6 +63,28 @@ int main()
       bool parseSuccessful = testTableRecv.ParseFromArray( recvMsg.data(), recvMsg.size() );
       std::cout << "Sub message received : " << testTableRecv.index() << std::endl;
     }
+
+    // REQ
+    // Message frame 1
+    zmq::message_t reqMsg1( msgString.size() + 1 );
+    memcpy( reqMsg1.data(), msgString.c_str(), msgString.size() + 1 );
+
+    // Message frame 2
+    testTable.set_index( i );
+    zmq::message_t reqMsg2( tableSize );
+    success = testTable.SerializeToArray( reqMsg2.data(), tableSize );
+
+    // Send messages
+    std::cout << "Request data : " << i << std::endl;
+    request.send( reqMsg1, ZMQ_SNDMORE );
+    request.send( reqMsg2 );
+
+    TestPackage::messageTable1 repTable;
+    zmq::message_t repMsg1;
+    zmq::message_t repMsg2;
+    request.recv( &repMsg1 );
+    request.recv( &repMsg2 );
+    bool parseSuccessful = repTable.ParseFromArray( repMsg2.data(), repMsg2.size() );
 
     sleep( 2 );
   }
