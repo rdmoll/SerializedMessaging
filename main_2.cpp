@@ -8,6 +8,7 @@
 int main()
 {
   std::cout << "Communicator 2 started" << std::endl;
+  std::cout << std::endl;
 
   zmq::context_t context( 1 );
 
@@ -35,6 +36,8 @@ int main()
   for( size_t i = 0; i < 10; i++ )
   {
     // PUB
+    std::cout << "PUBLISHER" << std::endl;
+
     // Message frame 1
     std::string msgString = "test";
     size_t msgSize = msgString.size() + 1;
@@ -47,11 +50,14 @@ int main()
     zmq::message_t pubMsg2( tableSize );
     bool success = testTable.SerializeToArray( pubMsg2.data(), tableSize );
 
-    std::cout << "Publishing data : " << i << std::endl;
     publisher.send( pubMsg1, ZMQ_SNDMORE );
     publisher.send( pubMsg2 );
+    std::cout << "PUB message sent : Index = " << i << std::endl;
+    std::cout << std::endl;
 
     // SUB
+    std::cout << "SUBSCRIBER" << std::endl;
+
     zmq::message_t recvMsg;
     subscriber.recv( &recvMsg, ZMQ_NOBLOCK );   // receive first frame
     if( recvMsg.size() > 0 )
@@ -60,17 +66,30 @@ int main()
 
       TestPackage::messageTable1 testTableRecv;
       bool parseSuccessful = testTableRecv.ParseFromArray( recvMsg.data(), recvMsg.size() );
-      std::cout << "Sub message received : " << testTableRecv.index() << std::endl;
+      std::cout << "SUB message received : Index = " << testTableRecv.index() << std::endl;
     }
+    else
+    {
+      std::cout << "No message" << std::endl;
+    }
+    std::cout << std::endl;
 
     // REP
+    std::cout << "REPLY" << std::endl;
+
     // Receive request
     zmq::message_t reqMsg1;
     reply.recv( &reqMsg1, ZMQ_NOBLOCK );
+    std::cout << "test1" << std::endl;
     if( reqMsg1.size() > 0 )
     {
+      std::cout << "test2" << std::endl;
       zmq::message_t reqMsg2;
-      reply.recv( &reqMsg2 );
+      //reply.recv( &reqMsg2 );
+
+      //TestPackage::messageTable1 receivedTable;
+      //success = receivedTable.ParseFromArray( reqMsg2.data(), reqMsg2.size() );
+      std::cout << "REQ message received : Index = " << std::endl; //receivedTable.index() << std::endl;
     }
 
     // Message frame 1
@@ -82,15 +101,19 @@ int main()
     zmq::message_t repMsg2( tableSize );
     success = testTable.SerializeToArray( repMsg2.data(), tableSize );
 
-    // Send messages
-    std::cout << "Request data : " << i << std::endl;
+    // Send reply messages
     reply.send( repMsg1, ZMQ_SNDMORE );
     reply.send( repMsg2 );
+    std::cout << "REP message sent : Index = " << i << std::endl;
+    std::cout << std::endl;
 
     sleep( 2 );
   }
 
   publisher.close();
+  subscriber.close();
+  request.close();
+  reply.close();
 
   return 0;
 }
