@@ -35,18 +35,21 @@ int main()
 
   for( size_t i = 0; i < 10; i++ )
   {
+
     // PUB
-    std::cout << "PUBLISHER" << std::endl;
+    //std::cout << "PUBLISHER" << std::endl;
 
     // Message frame 1
     std::string msgString = "test";
     size_t msgSize = msgString.size() + 1;
-    zmq::message_t pubMsg1( msgString.size() + 1 );
-    memcpy( pubMsg1.data(), msgString.c_str(), msgString.size() + 1 );
 
+    //zmq::message_t pubMsg1( msgString.size() + 1 );
+    //memcpy( pubMsg1.data(), msgString.c_str(), msgString.size() + 1 );
+    /*
     // Message frame 2
     testTable.set_index( i );
     size_t tableSize = testTable.ByteSizeLong();
+
     zmq::message_t pubMsg2( tableSize );
     bool success = testTable.SerializeToArray( pubMsg2.data(), tableSize );
 
@@ -74,6 +77,7 @@ int main()
       std::cout << "No message" << std::endl;
     }
     std::cout << std::endl;
+    */
 
     // REQ
     std::cout << "REQUEST" << std::endl;

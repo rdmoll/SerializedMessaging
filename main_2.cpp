@@ -35,6 +35,7 @@ int main()
 
   for( size_t i = 0; i < 10; i++ )
   {
+    /*
     // PUB
     std::cout << "PUBLISHER" << std::endl;
 
@@ -73,6 +74,7 @@ int main()
       std::cout << "No message" << std::endl;
     }
     std::cout << std::endl;
+    */
 
     // REP
     std::cout << "REPLY" << std::endl;
@@ -85,11 +87,11 @@ int main()
     {
       std::cout << "test2" << std::endl;
       zmq::message_t reqMsg2;
-      //reply.recv( &reqMsg2 );
+      reply.recv( &reqMsg2 );
 
-      //TestPackage::messageTable1 receivedTable;
-      //success = receivedTable.ParseFromArray( reqMsg2.data(), reqMsg2.size() );
-      std::cout << "REQ message received : Index = " << std::endl; //receivedTable.index() << std::endl;
+      TestPackage::messageTable1 receivedTable;
+      success = receivedTable.ParseFromArray( reqMsg2.data(), reqMsg2.size() );
+      std::cout << "REQ message received : Index = " << receivedTable.index() << std::endl;
     }
 
     // Message frame 1
