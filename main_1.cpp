@@ -45,11 +45,11 @@ int main()
 
     //zmq::message_t pubMsg1( msgString.size() + 1 );
     //memcpy( pubMsg1.data(), msgString.c_str(), msgString.size() + 1 );
-    /*
+
     // Message frame 2
     testTable.set_index( i );
     size_t tableSize = testTable.ByteSizeLong();
-
+    /*
     zmq::message_t pubMsg2( tableSize );
     bool success = testTable.SerializeToArray( pubMsg2.data(), tableSize );
 
@@ -89,7 +89,7 @@ int main()
     // Message frame 2
     testTable.set_index( i );
     zmq::message_t reqMsg2( tableSize );
-    success = testTable.SerializeToArray( reqMsg2.data(), tableSize );
+    bool success = testTable.SerializeToArray( reqMsg2.data(), tableSize );
 
     // Send messages
     request.send( reqMsg1, ZMQ_SNDMORE );

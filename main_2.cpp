@@ -35,19 +35,20 @@ int main()
 
   for( size_t i = 0; i < 10; i++ )
   {
-    /*
     // PUB
     std::cout << "PUBLISHER" << std::endl;
 
     // Message frame 1
     std::string msgString = "test";
     size_t msgSize = msgString.size() + 1;
-    zmq::message_t pubMsg1( msgString.size() + 1 );
-    memcpy( pubMsg1.data(), msgString.c_str(), msgString.size() + 1 );
+
+    //zmq::message_t pubMsg1( msgString.size() + 1 );
+    //memcpy( pubMsg1.data(), msgString.c_str(), msgString.size() + 1 );
 
     // Message frame 2
     testTable.set_index( i );
     size_t tableSize = testTable.ByteSizeLong();
+    /*
     zmq::message_t pubMsg2( tableSize );
     bool success = testTable.SerializeToArray( pubMsg2.data(), tableSize );
 
@@ -90,7 +91,7 @@ int main()
       reply.recv( &reqMsg2 );
 
       TestPackage::messageTable1 receivedTable;
-      success = receivedTable.ParseFromArray( reqMsg2.data(), reqMsg2.size() );
+      bool success1 = receivedTable.ParseFromArray( reqMsg2.data(), reqMsg2.size() );
       std::cout << "REQ message received : Index = " << receivedTable.index() << std::endl;
     }
 
@@ -101,7 +102,7 @@ int main()
     // Message frame 2
     testTable.set_index( i );
     zmq::message_t repMsg2( tableSize );
-    success = testTable.SerializeToArray( repMsg2.data(), tableSize );
+    bool success = testTable.SerializeToArray( repMsg2.data(), tableSize );
 
     // Send reply messages
     reply.send( repMsg1, ZMQ_SNDMORE );
