@@ -5,6 +5,8 @@
 
 #include "TableDefs.pb.h"
 
+// NOTE: Main loop should contain PUB, SUB, and nested REQ and REP ports
+
 int main()
 {
   std::cout << "Communicator 2 started" << std::endl;
